@@ -9,6 +9,8 @@ let prefix = config.prefix;
 const CLIENT_ID = "1043920385005076560"
 const client = new Client({intents: [GatewayIntentBits.GuildMessages, GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates]})
 
+const ytdl = require('ytdl-core');
+
 const commands = [
     {
         name: "play",
@@ -97,21 +99,12 @@ client.on("interactionCreate", async (interaction) => {
         return void interaction.reply({ content: "You are not in a voice channel!", ephemeral: true });
     }
 
-    if (interaction.guild.me.voice.channelId && interaction.member.voice.channelId !== interaction.guild.me.voice.channelId) {
-        return void interaction.reply({ content: "You are not in my voice channel!", ephemeral: true });
-    }
-
     if (interaction.commandName === "play") {
         await interaction.deferReply();
-
         const query = interaction.options.get("query").value;
-        const searchResult = await player
-            .search(query, {
-                requestedBy: interaction.user,
-                searchEngine: QueryType.AUTO
-            })
-            .catch(() => {});
-        if (!searchResult || !searchResult.tracks.length) return void interaction.followUp({ content: "No results were found!" });
+        console.log(3)
+        const searchResult = await player.search(query, {requestedBy: interaction.user, searchEngine: QueryType.AUTO}).catch(() => {});
+        if (!searchResult || !searchResult.tracks.length) return void interaction.followUp({ content: "Такой песни нет(" });
 
         const queue = await player.createQueue(interaction.guild, {
             metadata: interaction.channel
@@ -121,10 +114,10 @@ client.on("interactionCreate", async (interaction) => {
             if (!queue.connection) await queue.connect(interaction.member.voice.channel);
         } catch {
             void player.deleteQueue(interaction.guildId);
-            return void interaction.followUp({ content: "Could not join your voice channel!" });
+            return void interaction.followUp({ content: "Невозможно присоедениться к твоему голосовому каналу" });
         }
 
-        await interaction.followUp({ content: `⏱ | Loading your ${searchResult.playlist ? "playlist" : "track"}...` });
+        await interaction.followUp({ content: `⏱ | Загружается твой ${searchResult.playlist ? "плейлист" : "трек"}...` });
         searchResult.playlist ? queue.addTracks(searchResult.tracks) : queue.addTrack(searchResult.tracks[0]);
         if (!queue.playing) await queue.play();
     } else if (interaction.commandName === "skip") {
