@@ -25,7 +25,6 @@
     "url": "https://github.com/synicalsyntax/discord.js-heroku/issues"
   },
   "homepage": "https://github.com/synicalsyntax/discord.js-heroku#readme",
-
   "dependencies": {
     "discord.js": "^14.6.0",
     "@discordjs/opus": "^0.8.0",
