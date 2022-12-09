@@ -1,6 +1,6 @@
 const { Client, GuildMember, Intents, GatewayIntentBits, REST, Routes  } = require("discord.js")
 const { Player, QueryType } = require("discord-player");
-const ytdl = require("ytdl-core");
+//onst ytdl = require("ytdl-core");
 const config = require("./config.json");
 const { OpusEncoder } = require('@discordjs/opus');
 require("ffmpeg-static")

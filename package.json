@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "start": "index.js"
+  },
   "name": "music-bot",
   "version": "1.0.0",
   "dependencies": {
